@@ -5,7 +5,7 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
-//test
+
   const testENV = () => {
     console.log(`variable is ${import.meta.env.VITE_STEAM_KEY}`)
     console.log(`variable is ${import.meta.env.VITE_MY_ID}`)
