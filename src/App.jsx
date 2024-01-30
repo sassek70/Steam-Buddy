@@ -7,7 +7,9 @@ function App() {
   const [count, setCount] = useState(0)
 
   const testENV = () => {
-    // console.log(`variable is ${import.meta.env.VITE_WEB_API}`)
+    console.log(`variable is ${import.meta.env.VITE_STEAM_KEY}`)
+    console.log(`variable is ${import.meta.env.VITE_MY_ID}`)
+
     // userData()
 
   }
