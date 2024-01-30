@@ -6,13 +6,36 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
 
+  const testENV = () => {
+    // console.log(`variable is ${import.meta.env.VITE_WEB_API}`)
+    // userData()
+
+  }
+
+
+  // this needs to come from a server
+  // const userData = () => {
+  //   fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${import.meta.env.VITE_STEAM_KEY}&steamids=${import.meta.env.VITE_MY_ID}}`)
+  //     .then(res => {
+  //       if(res.ok) {
+  //         res.json().then(user => console.log(user))
+  //       } else {
+  //         res.json().then(errors => console.log(errors))
+  //       }
+  //     })
+      
+  //   }
+
+
+
+
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
+        <a href="https://vitejs.dev">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
-        <a href="https://react.dev" target="_blank">
+        <a href="https://react.dev">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
@@ -20,6 +43,9 @@ function App() {
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
+        </button>
+        <button onClick={() => testENV()}>
+          Test the thing
         </button>
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
