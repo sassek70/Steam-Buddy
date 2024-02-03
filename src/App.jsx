@@ -10,8 +10,10 @@ function App() {
     console.log(`variable is ${import.meta.env.VITE_STEAM_KEY}`)
     console.log(`variable is ${import.meta.env.VITE_MY_ID}`)
 
-    localHostTest()
+    // localHostTest()
     steamUserData()
+
+    // railsEnvTest()
 
   }
 
@@ -31,17 +33,29 @@ function App() {
     }
 
   // this needs to come from a server
-  const localHostTest = () => {
-    fetch(`http://localhost:3000/steam`)
-      .then(res => {
-        if(res.ok) {
-          res.json().then(user => console.log(user))
-        } else {
-          res.json().then(errors => console.log(errors))
-        }
-      })
+  // const localHostTest = () => {
+  //   fetch(`http://localhost:3000/steam`)
+  //     .then(res => {
+  //       if(res.ok) {
+  //         res.json().then(user => console.log(user))
+  //       } else {
+  //         res.json().then(errors => console.log(errors))
+  //       }
+  //     })
       
-    }
+  //   }
+
+    // const railsEnvTest = () => {
+    //   fetch(`http://localhost:3000/env`)
+    //     .then(res => {
+    //       if(res.ok) {
+    //         res.json().then(user => console.log(user))
+    //       } else {
+    //         res.json().then(errors => console.log(errors))
+    //       }
+    //     })
+        
+    //   }
 
 
   return (
