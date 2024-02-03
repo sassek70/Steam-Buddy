@@ -10,25 +10,38 @@ function App() {
     console.log(`variable is ${import.meta.env.VITE_STEAM_KEY}`)
     console.log(`variable is ${import.meta.env.VITE_MY_ID}`)
 
-    // userData()
+    localHostTest()
+    steamUserData()
 
   }
 
 
   // this needs to come from a server
-  // const userData = () => {
-  //   fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${import.meta.env.VITE_STEAM_KEY}&steamids=${import.meta.env.VITE_MY_ID}}`)
-  //     .then(res => {
-  //       if(res.ok) {
-  //         res.json().then(user => console.log(user))
-  //       } else {
-  //         res.json().then(errors => console.log(errors))
-  //       }
-  //     })
+  const steamUserData = () => {
+    // fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${import.meta.env.VITE_STEAM_KEY}&steamids=${import.meta.env.VITE_MY_ID}}`)
+    fetch(`http://localhost:3000/steam_user`)
+      .then(res => {
+        if(res.ok) {
+          res.json().then(user => console.log(user))
+        } else {
+          res.json().then(errors => console.log(errors))
+        }
+      })
       
-  //   }
+    }
 
-
+  // this needs to come from a server
+  const localHostTest = () => {
+    fetch(`http://localhost:3000/steam`)
+      .then(res => {
+        if(res.ok) {
+          res.json().then(user => console.log(user))
+        } else {
+          res.json().then(errors => console.log(errors))
+        }
+      })
+      
+    }
 
 
   return (
