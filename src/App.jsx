@@ -5,7 +5,7 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
-  const [serverResponse, setServerResposne] = useState()
+  // const [serverResponse, setServerResposne] = useState()
   const [lastCreatedTestUser, setLastCreatedTestUser] = useState()
 
   const backendUrl = "http://localhost:3000/"
@@ -39,7 +39,7 @@ function App() {
 
     const getAllUsers = () => {
       htttpGetRequest(backendUrl, "user_index")
-      console.log(serverResponse)
+      // console.log(serverResponse)
 
       // fetch(`http://localhost:3000/user_index`)
       //   .then(res => {
@@ -57,35 +57,49 @@ function App() {
         user_email: "test@test.com"
       }
       htttpPostRequest(backendUrl, "create_user", testUser)
-      setLastCreatedTestUser(serverResponse)
-      console.log(serverResponse)
+      // console.log(serverResponse)
+    }
+    console.log(lastCreatedTestUser)
+
+    const updateTestUser = () => {
+      const updatedUser = {
+        user_email: "testingAgain@test.org"
+      }
+      htttpPatchRequest(backendUrl, `update_user/${lastCreatedTestUser.id}`, updatedUser)
     }
 
+
     const clearAllUsers = () => {
-      const testUser = {
-        username: "Brian",
-        user_email: "test@test.com"
-      }
-      htttpDeleteRequest(backendUrl, "delete_all", lastCreatedTestUser.id)
-      console.log(serverResponse)
+      htttpDeleteRequest(backendUrl, "delete_all")
+      // console.log(serverResponse)
     }
+
+    
+    
+    const deleteLastCreatedUser = () => {
+      htttpDeleteRequest(backendUrl, `delete_user/${lastCreatedTestUser.id}`)
+      setLastCreatedTestUser( lastCreatedTestUser => "")
+      // console.log(serverResponse)
+    }
+
+
+    //-------------------------------------------------
 
     const htttpGetRequest = (url, endPoint) => {
       fetch(`${url}${endPoint}`)
       .then(res => {  
         if(res.ok) {
             res.json().then(data => {
-              setServerResposne(serverResponse => data)
+              // setServerResposne(serverResponse => data)
           })
             
         } else {
           res.json().then(errors => {
-            setServerResposne(serverResponse => errors)
+            // setServerResposne(serverResponse => errors)
           })
           }
       })
     }
-
 
     const htttpPostRequest = (url, endPoint, data) => {
       fetch(`${url}${endPoint}`, {
@@ -98,29 +112,60 @@ function App() {
       .then(res => {  
         if(res.ok) {
             res.json().then(data => {
-              setServerResposne(serverResponse => data)
+              // setServerResposne(serverResponse => data)
+              setLastCreatedTestUser( lastCreatedTestUser => data)
+
           })
             
         } else {
           res.json().then(errors => {
-            setServerResposne(serverResponse => errors)
+            // setServerResposne(serverResponse => errors)
+          })
+          }
+      })
+    }
+    
+    const htttpPatchRequest = (url, endPoint, data) => {
+      fetch(`${url}${endPoint}`, {
+        method: "PATCH",
+        headers: {
+          "Content-type": "Application/json",
+          "Accept": "Application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => {  
+        if(res.ok) {
+            res.json().then(data => {
+              // setServerResposne(serverResponse => data)
+              setLastCreatedTestUser( lastCreatedTestUser => data)
+
+          })
+            
+        } else {
+          res.json().then(errors => {
+            // setServerResposne(serverResponse => errors)
           })
           }
       })
     }
 
-
     const htttpDeleteRequest = (url, endPoint) => {
-      fetch(`${url}${endPoint}`)
+      fetch(`${url}${endPoint}`, {
+      method: "DELETE"
+    })
       .then(res => {  
         if(res.ok) {
             res.json().then(data => {
-              setServerResposne(serverResponse => data)
+              console.log(data)
+              // setServerResposne(serverResponse => data)
           })
             
         } else {
           res.json().then(errors => {
-            setServerResposne(serverResponse => errors)
+            console.log(errors)
+
+            // setServerResposne(serverResponse => errors)
           })
           }
       })
@@ -179,6 +224,16 @@ function App() {
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
+        <button onClick={() => updateTestUser() }>
+          Update Test User
+        </button>
+        <button onClick={() => deleteLastCreatedUser()}>
+          Delete last created user
+        </button>
+        <button onClick={() => clearAllUsers() }>
+          Clear all Test users
+        </button>
+
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
