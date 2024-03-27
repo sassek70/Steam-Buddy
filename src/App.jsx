@@ -5,6 +5,11 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [serverResponse, setServerResposne] = useState()
+  const [lastCreatedTestUser, setLastCreatedTestUser] = useState()
+
+  const backendUrl = "http://localhost:3000/"
+  // let serverGetResponse
 
   const testENV = () => {
     console.log(`variable is ${import.meta.env.VITE_STEAM_KEY}`)
@@ -30,6 +35,95 @@ function App() {
         }
       })
       
+    }
+
+    const getAllUsers = () => {
+      htttpGetRequest(backendUrl, "user_index")
+      console.log(serverResponse)
+
+      // fetch(`http://localhost:3000/user_index`)
+      //   .then(res => {
+      //     if(res.ok) {
+      //       res.json().then(allUsers => console.log(allUsers))
+      //     } else {
+      //       res.json().then(errors => console.log(errors))
+      //     }
+      // })
+    }
+
+    const testPost = () => {
+      const testUser = {
+        username: "Brian",
+        user_email: "test@test.com"
+      }
+      htttpPostRequest(backendUrl, "create_user", testUser)
+      setLastCreatedTestUser(serverResponse)
+      console.log(serverResponse)
+    }
+
+    const clearAllUsers = () => {
+      const testUser = {
+        username: "Brian",
+        user_email: "test@test.com"
+      }
+      htttpDeleteRequest(backendUrl, "delete_all", lastCreatedTestUser.id)
+      console.log(serverResponse)
+    }
+
+    const htttpGetRequest = (url, endPoint) => {
+      fetch(`${url}${endPoint}`)
+      .then(res => {  
+        if(res.ok) {
+            res.json().then(data => {
+              setServerResposne(serverResponse => data)
+          })
+            
+        } else {
+          res.json().then(errors => {
+            setServerResposne(serverResponse => errors)
+          })
+          }
+      })
+    }
+
+
+    const htttpPostRequest = (url, endPoint, data) => {
+      fetch(`${url}${endPoint}`, {
+        method: "POST",
+        headers: {
+          "Content-type": "Application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => {  
+        if(res.ok) {
+            res.json().then(data => {
+              setServerResposne(serverResponse => data)
+          })
+            
+        } else {
+          res.json().then(errors => {
+            setServerResposne(serverResponse => errors)
+          })
+          }
+      })
+    }
+
+
+    const htttpDeleteRequest = (url, endPoint) => {
+      fetch(`${url}${endPoint}`)
+      .then(res => {  
+        if(res.ok) {
+            res.json().then(data => {
+              setServerResposne(serverResponse => data)
+          })
+            
+        } else {
+          res.json().then(errors => {
+            setServerResposne(serverResponse => errors)
+          })
+          }
+      })
     }
 
   // this needs to come from a server
@@ -75,6 +169,12 @@ function App() {
         </button>
         <button onClick={() => testENV()}>
           Test the thing
+        </button>
+        <button onClick={() => getAllUsers()}>
+          Get a list of Users
+        </button>
+        <button onClick={() => testPost()}>
+          Create a test user
         </button>
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
