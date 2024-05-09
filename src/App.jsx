@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import {crud, setResponseObjectData} from './common/httpFunctions.js'
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
-  // const [serverResponse, setServerResposne] = useState()
+  const [serverResponse, setServerResponse] = useState()
+  const [serverErrors, setServerErrors] = useState()
   const [lastCreatedTestUser, setLastCreatedTestUser] = useState()
 
   const backendUrl = "http://localhost:3000/"
@@ -38,163 +40,154 @@ function App() {
     }
 
     const getAllUsers = () => {
-      htttpGetRequest(backendUrl, "user_index")
-      // console.log(serverResponse)
-
-      // fetch(`http://localhost:3000/user_index`)
-      //   .then(res => {
-      //     if(res.ok) {
-      //       res.json().then(allUsers => console.log(allUsers))
-      //     } else {
-      //       res.json().then(errors => console.log(errors))
-      //     }
-      // })
+      let response = crud.get(backendUrl, "user_index")
+      //  setServerResponse( (serverResponse) => crud.get(backendUrl, "user_index"))
+      //  setServerResponse( (serverResponse) => crud.get(backendUrl, "user_index"))
+       console.log(response)
+      //  console.log(serverResponse)
+      //  console.log(setResponseObjectData())
+      //  console.log(testServerResponse)
+      //  setServerResponse(serverResponse => testServerResponse)
     }
+    // console.log(serverResponse)
 
     const testPost = () => {
       const testUser = {
         username: "Brian",
         user_email: "test@test.com"
       }
-      htttpPostRequest(backendUrl, "create_user", testUser)
-      // console.log(serverResponse)
+      crud.post(backendUrl, "create_user", testUser)
+      console.log(lastCreatedTestUser)
     }
-    console.log(lastCreatedTestUser)
 
     const updateTestUser = () => {
       const updatedUser = {
         user_email: "testingAgain@test.org"
       }
-      htttpPatchRequest(backendUrl, `update_user/${lastCreatedTestUser.id}`, updatedUser)
+      crud.patch(backendUrl, `update_user/${lastCreatedTestUser.id}`, updatedUser)
+      console.log(lastCreatedTestUser)
     }
 
 
     const clearAllUsers = () => {
-      htttpDeleteRequest(backendUrl, "delete_all")
-      // console.log(serverResponse)
+      crud.delete(backendUrl, "delete_all")
     }
 
     
     
     const deleteLastCreatedUser = () => {
-      htttpDeleteRequest(backendUrl, `delete_user/${lastCreatedTestUser.id}`)
+      crud.delete(backendUrl, `delete_user/${lastCreatedTestUser.id}`)
       setLastCreatedTestUser( lastCreatedTestUser => "")
-      // console.log(serverResponse)
     }
 
 
     //-------------------------------------------------
 
-    const htttpGetRequest = (url, endPoint) => {
-      fetch(`${url}${endPoint}`)
-      .then(res => {  
-        if(res.ok) {
-            res.json().then(data => {
-              // setServerResposne(serverResponse => data)
-          })
-            
-        } else {
-          res.json().then(errors => {
-            // setServerResposne(serverResponse => errors)
-          })
-          }
-      })
-    }
-
-    const htttpPostRequest = (url, endPoint, data) => {
-      fetch(`${url}${endPoint}`, {
-        method: "POST",
-        headers: {
-          "Content-type": "Application/json"
-        },
-        body: JSON.stringify(data)
-      })
-      .then(res => {  
-        if(res.ok) {
-            res.json().then(data => {
-              // setServerResposne(serverResponse => data)
-              setLastCreatedTestUser( lastCreatedTestUser => data)
-
-          })
-            
-        } else {
-          res.json().then(errors => {
-            // setServerResposne(serverResponse => errors)
-          })
-          }
-      })
-    }
-    
-    const htttpPatchRequest = (url, endPoint, data) => {
-      fetch(`${url}${endPoint}`, {
-        method: "PATCH",
-        headers: {
-          "Content-type": "Application/json",
-          "Accept": "Application/json"
-        },
-        body: JSON.stringify(data)
-      })
-      .then(res => {  
-        if(res.ok) {
-            res.json().then(data => {
-              // setServerResposne(serverResponse => data)
-              setLastCreatedTestUser( lastCreatedTestUser => data)
-
-          })
-            
-        } else {
-          res.json().then(errors => {
-            // setServerResposne(serverResponse => errors)
-          })
-          }
-      })
-    }
-
-    const htttpDeleteRequest = (url, endPoint) => {
-      fetch(`${url}${endPoint}`, {
-      method: "DELETE"
-    })
-      .then(res => {  
-        if(res.ok) {
-            res.json().then(data => {
-              console.log(data)
-              // setServerResposne(serverResponse => data)
-          })
-            
-        } else {
-          res.json().then(errors => {
-            console.log(errors)
-
-            // setServerResposne(serverResponse => errors)
-          })
-          }
-      })
-    }
-
-  // this needs to come from a server
-  // const localHostTest = () => {
-  //   fetch(`http://localhost:3000/steam`)
-  //     .then(res => {
+  //   const htttpGetRequest = (url, endPoint) => {
+  //     fetch(`${url}${endPoint}`)
+  //     .then(res => {  
   //       if(res.ok) {
-  //         res.json().then(user => console.log(user))
+  //           res.json().then( data => {
+  //             setServerResponse( serverResponse => data)
+  //           }) 
   //       } else {
-  //         res.json().then(errors => console.log(errors))
-  //       }
+  //         res.json().then(errors => {
+  //           setServerErrors(serverErrors => errors)
+  //         })
+  //         }
   //     })
-      
   //   }
 
-    // const railsEnvTest = () => {
-    //   fetch(`http://localhost:3000/env`)
-    //     .then(res => {
-    //       if(res.ok) {
-    //         res.json().then(user => console.log(user))
-    //       } else {
-    //         res.json().then(errors => console.log(errors))
-    //       }
-    //     })
+  //   const htttpPostRequest = (url, endPoint, data) => {
+  //     fetch(`${url}${endPoint}`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-type": "Application/json"
+  //       },
+  //       body: JSON.stringify(data)
+  //     })
+  //     .then(res => {  
+  //       if(res.ok) {
+  //           res.json().then(data => {
+  //             setLastCreatedTestUser( lastCreatedTestUser => data)
+  //         })
+            
+  //       } else {
+  //         res.json().then(errors => {
+  //           setServerErrors(serverErrors => errors)
+  //         })
+  //         }
+  //     })
+  //   }
+    
+  //   const htttpPatchRequest = (url, endPoint, data) => {
+  //     fetch(`${url}${endPoint}`, {
+  //       method: "PATCH",
+  //       headers: {
+  //         "Content-type": "Application/json",
+  //         "Accept": "Application/json"
+  //       },
+  //       body: JSON.stringify(data)
+  //     })
+  //     .then(res => {  
+  //       if(res.ok) {
+  //           res.json().then(data => {
+  //             // setServerResponse(serverResponse => data)
+  //             setLastCreatedTestUser( lastCreatedTestUser => data)
+
+  //         })
+            
+  //       } else {
+  //         res.json().then(errors => {
+  //           setServerErrors(serverErrors => errors)
+  //         })
+  //         }
+  //     })
+  //   }
+
+  //   const htttpDeleteRequest = (url, endPoint) => {
+  //     fetch(`${url}${endPoint}`, {
+  //     method: "DELETE"
+  //   })
+  //     .then(res => {  
+  //       if(res.ok) {
+  //           res.json().then(data => {
+  //             console.log(data)
+  //             // setServerResponse(serverResponse => data)
+  //         })
+            
+  //       } else {
+  //         res.json().then(errors => {
+  //           setServerErrors(serverErrors => errors)
+  //         })
+  //         }
+  //     })
+  //   }
+
+  // // this needs to come from a server
+  // // const localHostTest = () => {
+  // //   fetch(`http://localhost:3000/steam`)
+  // //     .then(res => {
+  // //       if(res.ok) {
+  // //         res.json().then(user => console.log(user))
+  // //       } else {
+  // //         res.json().then(errors => console.log(errors))
+  // //       }
+  // //     })
+      
+  // //   }
+
+  //   // const railsEnvTest = () => {
+  //   //   fetch(`http://localhost:3000/env`)
+  //   //     .then(res => {
+  //   //       if(res.ok) {
+  //   //         res.json().then(user => console.log(user))
+  //   //       } else {
+  //   //         res.json().then(errors => console.log(errors))
+  //   //       }
+  //   //     })
         
-    //   }
+  //   //   }
 
 
   return (
