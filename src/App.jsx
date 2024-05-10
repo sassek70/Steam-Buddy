@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import {crud, setResponseObjectData} from './common/httpFunctions.js'
+import {crud} from './common/httpFunctions.js'
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
   const [serverResponse, setServerResponse] = useState()
-  const [serverErrors, setServerErrors] = useState()
+  // const [serverErrors, setServerErrors] = useState()
   const [lastCreatedTestUser, setLastCreatedTestUser] = useState()
 
   const backendUrl = "http://localhost:3000/"
@@ -40,10 +40,10 @@ function App() {
     }
 
     const getAllUsers = () => {
-      let response = crud.get(backendUrl, "user_index")
+      crud.get(backendUrl, "user_index", setServerResponse)
       //  setServerResponse( (serverResponse) => crud.get(backendUrl, "user_index"))
       //  setServerResponse( (serverResponse) => crud.get(backendUrl, "user_index"))
-       console.log(response)
+      console.log(serverResponse)
       //  console.log(serverResponse)
       //  console.log(setResponseObjectData())
       //  console.log(testServerResponse)
@@ -56,27 +56,34 @@ function App() {
         username: "Brian",
         user_email: "test@test.com"
       }
-      crud.post(backendUrl, "create_user", testUser)
-      console.log(lastCreatedTestUser)
+      crud.post(backendUrl, "create_user", testUser, setServerResponse)
+      setLastCreatedTestUser(lastCreatedTestUser => serverResponse)
+      
     }
+    console.log(serverResponse)
 
     const updateTestUser = () => {
       const updatedUser = {
         user_email: "testingAgain@test.org"
       }
-      crud.patch(backendUrl, `update_user/${lastCreatedTestUser.id}`, updatedUser)
-      console.log(lastCreatedTestUser)
+      crud.patch(backendUrl, `update_user/${lastCreatedTestUser.id}`, updatedUser, setServerResponse)
+
+    }
+
+    const updateCreatedTestUser = () => {
+      // setLastCreatedTestUser( lastCreatedTestUser =>)
     }
 
 
     const clearAllUsers = () => {
-      crud.delete(backendUrl, "delete_all")
+      crud.delete(backendUrl, "delete_all", setServerResponse)
+      console.log(serverResponse)
     }
 
     
     
     const deleteLastCreatedUser = () => {
-      crud.delete(backendUrl, `delete_user/${lastCreatedTestUser.id}`)
+      crud.delete(backendUrl, `delete_user/${lastCreatedTestUser.id}`, setServerResponse)
       setLastCreatedTestUser( lastCreatedTestUser => "")
     }
 

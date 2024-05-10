@@ -1,36 +1,23 @@
 
-let info;
 
 
-const htttpGetRequest = (url, endPoint) => {
+const htttpGetRequest = (url, endPoint, stateSetter) => {
     fetch(`${url}${endPoint}`)
-    .then(res => {  
+    .then(res => {
+      // IF statement resolves the Promise  
       if(res.ok) {
-          res.json().then( data => {
-
-            console.log(data)
-            info = data
-            // const info = data
-            console.log(info)
-
-            // console.log(testResposne)
-            // return testResposne
-          })
-          
-        } else {
-          res.json().then(errors => {
-            // testResposne = errors
-          })
+          return res.json()
+      } else {
+          return res.json()
         }
       })
-      // console.log("before return " + info)
-      return info
+      // .then statement here assigns value instead of the promise becuase it was resolved in the IF statement.
+      .then( data => stateSetter(data))
     }
 
   
 
-  const htttpPostRequest = (url, endPoint, data) => {
-    let serverResponse
+  const htttpPostRequest = (url, endPoint, data, stateSetter) => {
     fetch(`${url}${endPoint}`, {
       method: "POST",
       headers: {
@@ -40,20 +27,16 @@ const htttpGetRequest = (url, endPoint) => {
     })
     .then(res => {  
       if(res.ok) {
-          res.json().then( data => {
-            serverResponse = data})
-          
-      } else {
-        res.json().then(errors => {
-          serverResponse = errors
-        })
-        }
-      })
-      return serverResponse
+        return res.json()
+    } else {
+        return res.json()
+      }
+    })
+    // .then statement here assigns value instead of the promise becuase it was resolved in the IF statement.
+    .then( data => stateSetter(data))
     }
   
-  const htttpPatchRequest = (url, endPoint, data) => {
-    let serverResponse
+  const htttpPatchRequest = (url, endPoint, data, stateSetter) => {
     fetch(`${url}${endPoint}`, {
       method: "PATCH",
       headers: {
@@ -64,39 +47,41 @@ const htttpGetRequest = (url, endPoint) => {
     })
     .then(res => {  
       if(res.ok) {
-          res.json().then( data => {
-            serverResponse = data})
-          
-      } else {
-        res.json().then(errors => {
-          serverResponse = errors
-        })
-        }
-      })
-      return serverResponse
+        return res.json()
+    } else {
+        return res.json()
+      }
+    })
+    // .then statement here assigns value instead of the promise becuase it was resolved in the IF statement.
+    .then( data => stateSetter(data))
     }
-  const htttpDeleteRequest = (url, endPoint) => {
+
+
+  const htttpDeleteRequest = (url, endPoint, stateSetter) => {
     let serverResponse
     fetch(`${url}${endPoint}`, {
     method: "DELETE"
   })
   .then(res => {  
-    if(res.ok) {
-        res.json().then( data => {
-          serverResponse = data})
+    // if(res.ok) {
+    //     res.json().then( data => {
+    //       serverResponse = data})
         
-    } else {
-      res.json().then(errors => {
-        serverResponse = errors
-      })
-      }
-    })
-    return serverResponse
-  }
-
-  const setResponseObjectData = (data) => {
-    // crud.response = data
-
+    // } else {
+    //   res.json().then(errors => {
+    //     serverResponse = errors
+    //   })
+    //   }
+    // })
+    // return serverResponse
+    if(res.ok) {
+      return res.json()
+  } else {
+      return res.json()
+    }
+  })
+  // .then statement here assigns value instead of the promise becuase it was resolved in the IF statement.
+  .then( data => stateSetter(data))
   }
 
 // this needs to come from a server
@@ -131,4 +116,4 @@ const htttpGetRequest = (url, endPoint) => {
     delete: htttpDeleteRequest,
   }
 
-  export {crud,  setResponseObjectData}
+  export {crud}
