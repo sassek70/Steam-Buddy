@@ -3,12 +3,18 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import {crud} from './common/httpFunctions.js'
 import './App.css'
+import NavBar from './components/Navigation.jsx'
+import {Routes, Route} from 'react-router-dom'
+import UserProfile from './components/UserProfile.jsx'
+import LoginOrSignup from './components/LoginOrSignup.jsx'
 
 function App() {
   const [count, setCount] = useState(0)
   const [serverResponse, setServerResponse] = useState()
   // const [serverErrors, setServerErrors] = useState()
   const [lastCreatedTestUser, setLastCreatedTestUser] = useState()
+  const [currentUser, setCurrentUser] = useState()
+  
 
   const backendUrl = "http://localhost:3000/"
   // let serverGetResponse
@@ -53,20 +59,21 @@ function App() {
 
     const testPost = () => {
       const testUser = {
-        username: "Brian",
+        username: "asdfasdf",
         user_email: "test@test.com"
       }
-      crud.post(backendUrl, "create_user", testUser, setServerResponse)
-      setLastCreatedTestUser(lastCreatedTestUser => serverResponse)
+      crud.post(backendUrl, "create_user", testUser, setCurrentUser) //setServerResponse)
+      // setLastCreatedTestUser(lastCreatedTestUser => serverResponse)
+      setCurrentUser(serverResponse)
       
     }
-    console.log(serverResponse)
+    // console.log(serverResponse)
 
     const updateTestUser = () => {
       const updatedUser = {
         user_email: "testingAgain@test.org"
       }
-      crud.patch(backendUrl, `update_user/${lastCreatedTestUser.id}`, updatedUser, setServerResponse)
+      crud.patch(backendUrl, `update_user/${currentUser.id}`, updatedUser, setCurrentUser)
 
     }
 
@@ -83,8 +90,8 @@ function App() {
     
     
     const deleteLastCreatedUser = () => {
-      crud.delete(backendUrl, `delete_user/${lastCreatedTestUser.id}`, setServerResponse)
-      setLastCreatedTestUser( lastCreatedTestUser => "")
+      crud.delete(backendUrl, `delete_user/${currentUser.id}`, setServerResponse)
+      setCurrentUser( currentUser => "")
     }
 
 
@@ -199,6 +206,17 @@ function App() {
 
   return (
     <>
+    <NavBar  currentUser={currentUser}/>
+    <Routes>
+      {/* <Route path='/' element={currentUser ? <UserProfile currentUser={currentUser}/> : "Log Please log in"}/> */}
+      {currentUser ?
+        <Route path={`/${currentUser.id}/profile`} element={<UserProfile currentUser={currentUser}/>}/>      
+      :
+        <Route path={`/loginorsignup`} element={<LoginOrSignup/>}/>      
+      }
+
+    </Routes>
+    
       <div>
         <a href="https://vitejs.dev">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -222,7 +240,9 @@ function App() {
           Create a test user
         </button>
         <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+          {currentUser ? "User: " + currentUser.username : "No user"}
+          <br></br>
+          {currentUser ? "Email: " + currentUser.user_email : "No user"}
         </p>
         <button onClick={() => updateTestUser() }>
           Update Test User
