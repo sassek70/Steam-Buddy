@@ -9,7 +9,7 @@ const NavBar = ({currentUser}) => {
 
     return (
         <>
-            <NavLink to='/' name='Home'>
+            <NavLink to='/home' name='Home'>
                 HOME      
             </NavLink>
             <NavLink to='/' name='Home'>

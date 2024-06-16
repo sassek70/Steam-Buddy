@@ -208,11 +208,12 @@ function App() {
     <>
     <NavBar  currentUser={currentUser}/>
     <Routes>
+      <Route path='/home'/>
       {/* <Route path='/' element={currentUser ? <UserProfile currentUser={currentUser}/> : "Log Please log in"}/> */}
       {currentUser ?
         <Route path={`/${currentUser.id}/profile`} element={<UserProfile currentUser={currentUser}/>}/>      
       :
-        <Route path={`/loginorsignup`} element={<LoginOrSignup/>}/>      
+        <Route path={`/loginorsignup`} element={<LoginOrSignup backendUrl={backendUrl} currentUser={currentUser} setCurrentUser={setCurrentUser} setServerResponse={setServerResponse}/>}/>      
       }
 
     </Routes>
