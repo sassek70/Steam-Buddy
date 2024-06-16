@@ -3,9 +3,9 @@ import { crud } from "../common/httpFunctions"
 import { UNSAFE_DataRouterStateContext, useNavigate } from "react-router-dom"
 
 
-const LoginOrSignup = ({backendUrl, currentUser, setCurrentUser, setServerResponse}) => {
+const LoginOrSignup = ({backendUrl, currentUser, setCurrentUser, setServerResponse, serverErrors, setServerErrors}) => {
     const navigate = useNavigate()
-    const [existingUser, setExistingUser] = useState(true)
+    const [signUp, setSignUp] = useState(true)
     const [formData, setFormData] = useState({
         username: "",
         password: "",
@@ -20,18 +20,22 @@ const LoginOrSignup = ({backendUrl, currentUser, setCurrentUser, setServerRespon
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        if (!existingUser) {
+        if (!signUp) {
             crud.post(backendUrl,"create_user", formData, setCurrentUser)
-
+            // navigate("/home")
         } else {
-            crud.post(backendUrl,"login", setServerResponse)
+            const loginData = {
+                username: formData.username,
+                password: formData.password
+            }
+            crud.post(backendUrl,"login", loginData, setServerErrors)
         }
-        navigate("/home")
 
     }
+    console.log(serverErrors)
 
-    const setSignUp = () => {
-        setExistingUser(!existingUser)
+    const toggleSignUp = () => {
+        setSignUp(!signUp)
     }
     // const redirectToProfile = () => {
     //     navigate(`/${currentUser.id}/profile`)    
@@ -40,12 +44,12 @@ const LoginOrSignup = ({backendUrl, currentUser, setCurrentUser, setServerRespon
     console.log(backendUrl)
     return (
         <>
-            {existingUser ? 
+            {signUp ? 
             <>
                 <h3>
                     Please log in
                 </h3>
-                <button onClick={()=>setSignUp()}>Click here to create an Account</button>
+                <button onClick={()=>toggleSignUp()}>Click here to create an Account</button>
                 <form onSubmit={(handleSubmit)}>
                     <div>
                         <label htmlFor="username">Username:</label>
@@ -59,6 +63,13 @@ const LoginOrSignup = ({backendUrl, currentUser, setCurrentUser, setServerRespon
                         <button type="Submit">Log In</button>
                     </div>
                 </form>
+                {serverErrors ?
+                <h3>
+                    {serverErrors.error}
+                </h3>
+                :
+                <></>    
+            }
             </>
                 :
                 <>

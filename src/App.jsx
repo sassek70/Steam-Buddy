@@ -11,6 +11,7 @@ import LoginOrSignup from './components/LoginOrSignup.jsx'
 function App() {
   const [count, setCount] = useState(0)
   const [serverResponse, setServerResponse] = useState()
+  const [serverErrors, setServerErrors] = useState()
   // const [serverErrors, setServerErrors] = useState()
   const [lastCreatedTestUser, setLastCreatedTestUser] = useState()
   const [currentUser, setCurrentUser] = useState()
@@ -203,6 +204,10 @@ function App() {
         
   //   //   }
 
+  if (currentUser) {
+    console.log(currentUser.user)
+  }
+
 
   return (
     <>
@@ -213,10 +218,18 @@ function App() {
       {currentUser ?
         <Route path={`/${currentUser.id}/profile`} element={<UserProfile currentUser={currentUser}/>}/>      
       :
-        <Route path={`/loginorsignup`} element={<LoginOrSignup backendUrl={backendUrl} currentUser={currentUser} setCurrentUser={setCurrentUser} setServerResponse={setServerResponse}/>}/>      
+        <Route path={`/loginorsignup`} element={<LoginOrSignup backendUrl={backendUrl} currentUser={currentUser} setCurrentUser={setCurrentUser} setServerResponse={setServerResponse} serverErrors={serverErrors} setServerErrors={setServerErrors}/>}/>      
       }
 
     </Routes>
+
+    {serverErrors ? 
+      <div>
+        {serverErrors.error}
+      </div>  
+      :
+      <></>
+  }
     
       <div>
         <a href="https://vitejs.dev">
@@ -241,7 +254,7 @@ function App() {
           Create a test user
         </button>
         <p>
-          {currentUser ? "User: " + currentUser.username : "No user"}
+          {currentUser ? "User: " + currentUser.user.username : "No user"}
           <br></br>
           {currentUser ? "Email: " + currentUser.user_email : "No user"}
         </p>

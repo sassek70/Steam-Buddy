@@ -18,7 +18,7 @@ const htttpGetRequest = (url, endPoint, stateSetter) => {
   
 
   const htttpPostRequest = (url, endPoint, data, stateSetter) => {
-    console.log("hit post function")
+    console.log("hit post function", data)
     fetch(`${url}${endPoint}`, {
       method: "POST",
       headers: {
