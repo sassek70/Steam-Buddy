@@ -61,6 +61,7 @@ function App() {
     const testPost = () => {
       const testUser = {
         username: "asdfasdf",
+        password: "123456",
         user_email: "test@test.com"
       }
       crud.post(backendUrl, "create_user", testUser, setCurrentUser) //setServerResponse)
@@ -68,7 +69,6 @@ function App() {
       setCurrentUser(serverResponse)
       
     }
-    // console.log(serverResponse)
 
     const updateTestUser = () => {
       const updatedUser = {
@@ -77,11 +77,6 @@ function App() {
       crud.patch(backendUrl, `update_user/${currentUser.id}`, updatedUser, setCurrentUser)
 
     }
-
-    const updateCreatedTestUser = () => {
-      // setLastCreatedTestUser( lastCreatedTestUser =>)
-    }
-
 
     const clearAllUsers = () => {
       crud.delete(backendUrl, "delete_all", setServerResponse)
@@ -230,16 +225,7 @@ function App() {
       :
       <></>
   }
-    
-      <div>
-        <a href="https://vitejs.dev">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+  
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
@@ -254,7 +240,7 @@ function App() {
           Create a test user
         </button>
         <p>
-          {currentUser ? "User: " + currentUser.user.username : "No user"}
+          {currentUser ? "User: " + currentUser.username : "No user"}
           <br></br>
           {currentUser ? "Email: " + currentUser.user_email : "No user"}
         </p>
