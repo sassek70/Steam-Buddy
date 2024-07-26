@@ -28,11 +28,11 @@ const LoginOrSignup = ({backendUrl, currentUser, setCurrentUser, setServerRespon
                 username: formData.username,
                 password: formData.password
             }
-            crud.post(backendUrl,"login", loginData, setServerErrors)
+            crud.post(backendUrl,"login", loginData, setCurrentUser)
         }
 
     }
-    console.log(serverErrors)
+    // console.log(serverErrors)
 
     const toggleSignUp = () => {
         setSignUp(!signUp)
@@ -41,7 +41,7 @@ const LoginOrSignup = ({backendUrl, currentUser, setCurrentUser, setServerRespon
     //     navigate(`/${currentUser.id}/profile`)    
     // }
 
-    console.log(backendUrl)
+    // console.log(backendUrl)
     return (
         <>
             {signUp ? 
