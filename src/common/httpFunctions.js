@@ -17,14 +17,14 @@ const htttpGetRequest = async (url, endPoint, stateSetter) => {
 
   
 
-  const htttpPostRequest = (url, endPoint, data, stateSetter) => {
-    console.log("hit post function", data)
-    fetch(`${url}${endPoint}`, {
+  const htttpPostRequest = async (url, endPoint, postData, stateSetter) => {
+    console.log("hit post function", postData)
+    await fetch(`${url}${endPoint}`, {
       method: "POST",
       headers: {
         "Content-type": "Application/json"
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(postData)
     })
     .then(res => {  
       if(res.ok) {
@@ -34,7 +34,9 @@ const htttpGetRequest = async (url, endPoint, stateSetter) => {
       }
     })
     // .then statement here assigns value instead of the promise becuase it was resolved in the IF statement.
-    .then( data => stateSetter(data))
+    .then( data => {
+      console.log(data)
+      stateSetter(data)})
     }
   
   const htttpPatchRequest = (url, endPoint, data, stateSetter) => {

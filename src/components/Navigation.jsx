@@ -4,13 +4,6 @@ import {NavLink} from 'react-router-dom'
 
 const NavBar = ({currentUser, setCurrentUser}) => {
 
-console.log(setCurrentUser)
-    // const handleClick = () => {
-    //     setCurrentUser("")
-    // }
-
-
-
 
     return (
         <>
@@ -28,7 +21,7 @@ console.log(setCurrentUser)
                     <NavLink to={`/${currentUser.id}/profile`} name='Home'>
                         PROFILE            
                     </NavLink>
-                    <button onClick={() => setCurrentUser(null)}>Log Out</button>
+                    <button onClick={() => setCurrentUser(currentUser => null)}>Log Out</button>
                 </>
                 :
                 <NavLink to={`/loginorsignup`} name="LoginorSignup">

@@ -4,11 +4,12 @@ import viteLogo from '/vite.svg'
 import {crud} from './common/httpFunctions.js'
 import './App.css'
 import NavBar from './components/Navigation.jsx'
-import {Routes, Route} from 'react-router-dom'
+import {Routes, Route, useNavigate} from 'react-router-dom'
 import UserProfile from './components/UserProfile.jsx'
 import LoginOrSignup from './components/LoginOrSignup.jsx'
 
 function App() {
+  const navigate = useNavigate()
   const [count, setCount] = useState(0)
   const [serverResponse, setServerResponse] = useState()
   const [serverErrors, setServerErrors] = useState()
@@ -58,7 +59,7 @@ function App() {
       //  console.log(testServerResponse)
       //  setServerResponse(serverResponse => testServerResponse)
     }
-    console.log(allUsers)
+    // console.log(allUsers)
 
     const testPost = () => {
       const testUser = {
@@ -68,7 +69,8 @@ function App() {
       }
       crud.post(backendUrl, "create_user", testUser, setCurrentUser) //setServerResponse)
       // setLastCreatedTestUser(lastCreatedTestUser => serverResponse)
-      setCurrentUser(serverResponse)
+      // setCurrentUser(serverResponse)
+      navigate(`/home`)
       
     }
 
@@ -77,6 +79,7 @@ function App() {
         user_email: "testingAgain@test.org"
       }
       crud.patch(backendUrl, `update_user/${currentUser.id}`, updatedUser, setCurrentUser)
+      navigate(`/${currentUser.id}/profile`)
 
     }
 
@@ -89,10 +92,10 @@ function App() {
     
     const deleteLastCreatedUser = () => {
       crud.delete(backendUrl, `delete_user/${currentUser.id}`, setServerResponse)
-      setCurrentUser( currentUser => "")
+      setCurrentUser("")
     }
 
-
+//#region in-file http requests
     //-------------------------------------------------
 
   //   const htttpGetRequest = (url, endPoint) => {
@@ -200,15 +203,17 @@ function App() {
   //   //     })
         
   //   //   }
+  //#endregion
+
 
   if (currentUser) {
-    console.log(currentUser.user)
+    console.log(currentUser)
   }
 
 
   return (
     <>
-    <NavBar  currentUser={currentUser}/>
+    <NavBar  currentUser={currentUser} setCurrentUser={setCurrentUser}/>
     <Routes>
       <Route path='/home'/>
       {/* <Route path='/' element={currentUser ? <UserProfile currentUser={currentUser}/> : "Log Please log in"}/> */}
