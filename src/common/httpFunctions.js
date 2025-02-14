@@ -1,8 +1,8 @@
 
 
 
-const htttpGetRequest = (url, endPoint, stateSetter) => {
-    fetch(`${url}${endPoint}`)
+const htttpGetRequest = async (url, endPoint, stateSetter) => {
+    await fetch(`${url}${endPoint}`)
     .then(res => {
       // IF statement resolves the Promise  
       if(res.ok) {

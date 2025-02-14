@@ -15,6 +15,7 @@ function App() {
   // const [serverErrors, setServerErrors] = useState()
   const [lastCreatedTestUser, setLastCreatedTestUser] = useState()
   const [currentUser, setCurrentUser] = useState()
+  const [allUsers, setAllUsers] = useState(null)
   
 
   const backendUrl = "http://localhost:3000/"
@@ -47,16 +48,17 @@ function App() {
     }
 
     const getAllUsers = () => {
-      crud.get(backendUrl, "user_index", setServerResponse)
+      crud.get(backendUrl, "user_index", setAllUsers)
+      // setAllUsers()
       //  setServerResponse( (serverResponse) => crud.get(backendUrl, "user_index"))
       //  setServerResponse( (serverResponse) => crud.get(backendUrl, "user_index"))
-      console.log(serverResponse)
+      // console.log(serverResponse)
       //  console.log(serverResponse)
       //  console.log(setResponseObjectData())
       //  console.log(testServerResponse)
       //  setServerResponse(serverResponse => testServerResponse)
     }
-    // console.log(serverResponse)
+    console.log(allUsers)
 
     const testPost = () => {
       const testUser = {
@@ -254,6 +256,9 @@ function App() {
           Clear all Test users
         </button>
 
+      </div>
+      <div>
+        Active Users: {allUsers != null ? allUsers.length : "no active users"}
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
