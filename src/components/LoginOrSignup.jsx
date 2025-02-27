@@ -5,7 +5,7 @@ import { UNSAFE_DataRouterStateContext, useNavigate } from "react-router-dom"
 
 const LoginOrSignup = ({backendUrl, currentUser, setCurrentUser, serverErrors, setServerErrors}) => {
     const navigate = useNavigate()
-    const [serverResponse, setServerResponse] = useState(null)
+    const [serverResponse, setServerResponse] = useState("")
     const [signUp, setSignUp] = useState(true)
     const [formData, setFormData] = useState({
         username: "",
@@ -31,6 +31,7 @@ const LoginOrSignup = ({backendUrl, currentUser, setCurrentUser, serverErrors, s
             crud.post(backendUrl,"login", loginData, setServerResponse)
         }
         localStorage.setItem("uid", serverResponse.auth_token)
+        // console.log(serverResponse.auth_token)
         // setCurrentUser(serverResponse.user)
         navigate("/home")
         

@@ -60,9 +60,8 @@ const htttpGetRequest = async (url, endPoint, stateSetter) => {
     }
 
 
-  const htttpDeleteRequest = (url, endPoint, stateSetter) => {
-    let serverResponse
-    fetch(`${url}${endPoint}`, {
+  const htttpDeleteRequest = async (url, endPoint, stateSetter) => {
+    await fetch(`${url}${endPoint}`, {
     method: "DELETE"
   })
   .then(res => {  

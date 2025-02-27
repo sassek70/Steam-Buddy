@@ -59,9 +59,9 @@ function App() {
         password: "123456",
         user_email: "test@test.com"
       }
-      crud.post(backendUrl, "create_user", testUser, setCurrentUser) //setServerResponse)
+      crud.post(backendUrl, "create_user", testUser, setServerResponse) //setServerResponse)
       // setLastCreatedTestUser(lastCreatedTestUser => serverResponse)
-      // setCurrentUser(serverResponse)
+      // setCurrentUser(serverResponse.user)
       navigate(`/home`)
       
     }
@@ -78,6 +78,7 @@ function App() {
     const clearAllUsers = () => {
       crud.delete(backendUrl, "delete_all", setServerResponse)
       localStorage.removeItem("uid")
+      currentUser("")
       console.log(serverResponse)
     }
 
@@ -85,7 +86,7 @@ function App() {
     
     const deleteLastCreatedUser = () => {
       crud.delete(backendUrl, `delete_user/${currentUser.id}`, setServerResponse)
-      setCurrentUser("")
+      setCurrentUser((currentUser) => "")
     }
 
 //#region in-file http requests
