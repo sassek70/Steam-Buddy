@@ -18,7 +18,7 @@ const htttpGetRequest = async (url, endPoint, stateSetter) => {
   
 
   const htttpPostRequest = async (url, endPoint, postData, stateSetter) => {
-    console.log("hit post function", postData)
+    // console.log("hit post function", postData)
     await fetch(`${url}${endPoint}`, {
       method: "POST",
       headers: {

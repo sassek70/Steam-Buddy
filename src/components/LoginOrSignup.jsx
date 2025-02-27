@@ -3,8 +3,9 @@ import { crud } from "../common/httpFunctions"
 import { UNSAFE_DataRouterStateContext, useNavigate } from "react-router-dom"
 
 
-const LoginOrSignup = ({backendUrl, currentUser, setCurrentUser, setServerResponse, serverErrors, setServerErrors}) => {
+const LoginOrSignup = ({backendUrl, currentUser, setCurrentUser, serverErrors, setServerErrors}) => {
     const navigate = useNavigate()
+    const [serverResponse, setServerResponse] = useState(null)
     const [signUp, setSignUp] = useState(true)
     const [formData, setFormData] = useState({
         username: "",
@@ -21,18 +22,19 @@ const LoginOrSignup = ({backendUrl, currentUser, setCurrentUser, setServerRespon
     const handleSubmit = (event) => {
         event.preventDefault()
         if (!signUp) {
-            crud.post(backendUrl,"create_user", formData, setCurrentUser)
-            // navigate("/home")
+            crud.post(backendUrl,"create_user", formData, setServerResponse)
         } else {
             const loginData = {
                 username: formData.username,
                 password: formData.password
             }
-            crud.post(backendUrl,"login", loginData, setCurrentUser)
+            crud.post(backendUrl,"login", loginData, setServerResponse)
         }
-
+        localStorage.setItem("uid", serverResponse.auth_token)
+        // setCurrentUser(serverResponse.user)
+        navigate("/home")
+        
     }
-    // console.log(serverErrors)
 
     const toggleSignUp = () => {
         setSignUp(!signUp)

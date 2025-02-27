@@ -37,7 +37,7 @@ function App() {
   // this needs to come from a server
   const steamUserData = () => {
     // fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${import.meta.env.VITE_STEAM_KEY}&steamids=${import.meta.env.VITE_MY_ID}}`)
-    fetch(`http://localhost:3000/steam_user`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/steam_user`)
       .then(res => {
         if(res.ok) {
           res.json().then(user => console.log(user))
@@ -50,16 +50,8 @@ function App() {
 
     const getAllUsers = () => {
       crud.get(backendUrl, "user_index", setAllUsers)
-      // setAllUsers()
-      //  setServerResponse( (serverResponse) => crud.get(backendUrl, "user_index"))
-      //  setServerResponse( (serverResponse) => crud.get(backendUrl, "user_index"))
-      // console.log(serverResponse)
-      //  console.log(serverResponse)
-      //  console.log(setResponseObjectData())
-      //  console.log(testServerResponse)
-      //  setServerResponse(serverResponse => testServerResponse)
+
     }
-    // console.log(allUsers)
 
     const testPost = () => {
       const testUser = {
@@ -85,6 +77,7 @@ function App() {
 
     const clearAllUsers = () => {
       crud.delete(backendUrl, "delete_all", setServerResponse)
+      localStorage.removeItem("uid")
       console.log(serverResponse)
     }
 
@@ -220,7 +213,7 @@ function App() {
       {currentUser ?
         <Route path={`/${currentUser.id}/profile`} element={<UserProfile currentUser={currentUser}/>}/>      
       :
-        <Route path={`/loginorsignup`} element={<LoginOrSignup backendUrl={backendUrl} currentUser={currentUser} setCurrentUser={setCurrentUser} setServerResponse={setServerResponse} serverErrors={serverErrors} setServerErrors={setServerErrors}/>}/>      
+        <Route path={`/loginorsignup`} element={<LoginOrSignup backendUrl={backendUrl} currentUser={currentUser} setCurrentUser={setCurrentUser} serverErrors={serverErrors} setServerErrors={setServerErrors}/>}/>      
       }
 
     </Routes>
