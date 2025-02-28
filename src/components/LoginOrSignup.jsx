@@ -18,22 +18,37 @@ const LoginOrSignup = ({backendUrl, currentUser, setCurrentUser, serverErrors, s
         setFormData({...formData, [name]: value})
     }
 
+    const createNewUser = async (formData) => {
+        const newUser =  crud.post(backendUrl,"create_user", formData)
+        return newUser
+        // console.log(newUser)
+        // console.log(crud.post(backendUrl,"create_user", formData))
+    }
 
-    const handleSubmit = (event) => {
+
+    const handleSubmit = async (event) => {
         event.preventDefault()
         if (!signUp) {
-            crud.post(backendUrl,"create_user", formData, setServerResponse)
+           const result = await createNewUser(formData)
+           localStorage.setItem("uid", result.auth_token)
+           setCurrentUser(result.user)
+
+
+
+            console.log(result)
         } else {
             const loginData = {
                 username: formData.username,
                 password: formData.password
             }
-            crud.post(backendUrl,"login", loginData, setServerResponse)
+            const result = await crud.post(backendUrl,"login", loginData)
+            localStorage.setItem("uid", result.auth_token)
+            setCurrentUser(result.user)
         }
-        localStorage.setItem("uid", serverResponse.auth_token)
+        // localStorage.setItem("uid", serverResponse.auth_token)
         // console.log(serverResponse.auth_token)
         // setCurrentUser(serverResponse.user)
-        navigate("/home")
+        // navigate("/home")
         
     }
 
