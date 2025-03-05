@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import {crud} from './common/httpFunctions.js'
@@ -7,6 +7,7 @@ import NavBar from './components/Navigation.jsx'
 import {Routes, Route, useNavigate} from 'react-router-dom'
 import UserProfile from './components/UserProfile.jsx'
 import LoginOrSignup from './components/LoginOrSignup.jsx'
+import { UserContext } from './context/UserContext.jsx'
 
 function App() {
   const navigate = useNavigate()
@@ -15,7 +16,7 @@ function App() {
   const [serverErrors, setServerErrors] = useState()
   // const [serverErrors, setServerErrors] = useState()
   const [lastCreatedTestUser, setLastCreatedTestUser] = useState()
-  const [currentUser, setCurrentUser] = useState()
+  const {currentUser, setCurrentUser} = useContext(UserContext)
   const [allUsers, setAllUsers] = useState(null)
   
 
@@ -70,7 +71,7 @@ function App() {
       const updatedUser = {
         user_email: "testingAgain@test.org"
       }
-      crud.patch(backendUrl, `update_user/${currentUser.id}`, updatedUser, setCurrentUser)
+      crud.patch(backendUrl, `update_user/${currentUser.id}`, updatedUser, )
       navigate(`/${currentUser.id}/profile`)
 
     }
@@ -207,14 +208,14 @@ function App() {
 
   return (
     <>
-    <NavBar  currentUser={currentUser} setCurrentUser={setCurrentUser}/>
+    <NavBar  currentUser={currentUser}/>
     <Routes>
       <Route path='/home'/>
       {/* <Route path='/' element={currentUser ? <UserProfile currentUser={currentUser}/> : "Log Please log in"}/> */}
       {currentUser ?
         <Route path={`/${currentUser.id}/profile`} element={<UserProfile currentUser={currentUser}/>}/>      
       :
-        <Route path={`/loginorsignup`} element={<LoginOrSignup backendUrl={backendUrl} currentUser={currentUser} setCurrentUser={setCurrentUser} serverErrors={serverErrors} setServerErrors={setServerErrors}/>}/>      
+        <Route path={`/loginorsignup`} element={<LoginOrSignup backendUrl={backendUrl} currentUser={currentUser} serverErrors={serverErrors} setServerErrors={setServerErrors}/>}/>      
       }
 
     </Routes>

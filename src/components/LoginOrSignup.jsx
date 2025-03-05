@@ -1,10 +1,12 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { crud } from "../common/httpFunctions"
-import { UNSAFE_DataRouterStateContext, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { UserContext } from "../context/UserContext"
 
 
-const LoginOrSignup = ({backendUrl, currentUser, setCurrentUser, serverErrors, setServerErrors}) => {
+const LoginOrSignup = ({backendUrl, serverErrors, setServerErrors}) => {
     const navigate = useNavigate()
+    const {currentUser, setCurrentUser} = useContext(UserContext)
     const [serverResponse, setServerResponse] = useState("")
     const [signUp, setSignUp] = useState(true)
     const [formData, setFormData] = useState({

@@ -1,8 +1,17 @@
+import { useContext } from 'react'
 import {NavLink} from 'react-router-dom'
+import { UserContext } from '../context/UserContext'
 
 
 
-const NavBar = ({currentUser, setCurrentUser}) => {
+const NavBar = () => {
+
+    const {currentUser, setCurrentUser} = useContext(UserContext)
+
+    const handleLogOut = () => {
+        setCurrentUser(currentUser => null)
+        localStorage.removeItem("uid")
+    }
 
 
     return (
@@ -21,7 +30,7 @@ const NavBar = ({currentUser, setCurrentUser}) => {
                     <NavLink to={`/${currentUser.id}/profile`} name='Home'>
                         PROFILE            
                     </NavLink>
-                    <button onClick={() => setCurrentUser(currentUser => null)}>Log Out</button>
+                    <button onClick={() => handleLogOut()}>Log Out</button>
                 </>
                 :
                 <NavLink to={`/loginorsignup`} name="LoginorSignup">

@@ -9,24 +9,24 @@ const UserContext = React.createContext()
 
 // create provider component
 const UserProvider = ({children}) => {
+    
     const navigate = useNavigate()
     const [currentUser, setCurrentUser] = useState(null)
 
-    // const setUser = async (user) => {
-    //     setCurrentUser(user)
-    // }
-    
+    const setUser = async (user) => {
+        setCurrentUser(user)
+    }
     useEffect(() => {
         const loginInUser = async () => {
             if(localStorage.uid) {
                 //not setting currentUser state correcly
-                const loggedIn = await crud.post(import.meta.env.VITE_BACKEND_URL, `existing_token`, localStorage.uid)
-                // await setUser(loggedIn.username)
-                console.log(loggedIn)
-                navigate(`/home`)
+                const existingToken = await crud.post(import.meta.env.VITE_BACKEND_URL, `existing_token`, localStorage.uid)
+                await setUser(existingToken)
+                console.log(existingToken)
+                // navigate(`/home`)
             } else {
                 console.log("No user found")
-                navigate(`/home`)
+                // navigate(`/home`)
             }
         }
         loginInUser()
@@ -34,7 +34,7 @@ const UserProvider = ({children}) => {
 
     // the value prop of the provider is the context data
     // this value will be available in the child components of this provider
-    return ( <UserContext.Provider value={{setCurrentUser}}>
+    return ( <UserContext.Provider value={{currentUser, setCurrentUser}}>
         {children}
     </UserContext.Provider>)
 }
