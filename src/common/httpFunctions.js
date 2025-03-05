@@ -1,7 +1,7 @@
 
 
 
-const htttpGetRequest = async (url, endPoint, stateSetter) => {
+const htttpGetRequest = async (url, endPoint) => {
     await fetch(`${url}${endPoint}`)
     .then(res => {
       // IF statement resolves the Promise  
@@ -12,7 +12,7 @@ const htttpGetRequest = async (url, endPoint, stateSetter) => {
         }
       })
       // .then statement here assigns value instead of the promise becuase it was resolved in the IF statement.
-      .then( data => stateSetter(data))
+      // .then( data => stateSetter(data))
     }
 
   

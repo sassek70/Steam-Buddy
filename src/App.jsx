@@ -8,6 +8,7 @@ import {Routes, Route, useNavigate} from 'react-router-dom'
 import UserProfile from './components/UserProfile.jsx'
 import LoginOrSignup from './components/LoginOrSignup.jsx'
 import { UserContext } from './context/UserContext.jsx'
+import StoreSearch from './components/StoreSearch.jsx'
 
 function App() {
   const navigate = useNavigate()
@@ -219,6 +220,7 @@ function App() {
       }
 
     </Routes>
+    <StoreSearch />
 
     {serverErrors ? 
       <div>
