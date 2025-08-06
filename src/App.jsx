@@ -19,6 +19,8 @@ function App() {
   const [lastCreatedTestUser, setLastCreatedTestUser] = useState()
   const {currentUser, setCurrentUser} = useContext(UserContext)
   const [allUsers, setAllUsers] = useState(null)
+  const [appList, setAppList] = useState()
+
   
 
   const backendUrl = "http://localhost:3000/"
@@ -206,6 +208,9 @@ function App() {
     console.log(currentUser)
   }
 
+  // if (appList != "" || null) {
+  //   a
+  // }
 
   return (
     <>
@@ -220,7 +225,7 @@ function App() {
       }
 
     </Routes>
-    <StoreSearch />
+    <StoreSearch setAppList={setAppList}/>
 
     {serverErrors ? 
       <div>
@@ -265,6 +270,11 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <button onClick={(console.log(appList))}>
+        App List Test
+      </button>
+
+
     </>
   )
 }

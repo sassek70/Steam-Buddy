@@ -2,7 +2,7 @@ import { useState } from "react"
 import { crud } from "../common/httpFunctions"
 
 
-const StoreSearch = () => {
+const StoreSearch = ({setAppList}) => {
 
     const [formData, setFormData] = useState({userSearchTerm: ""})
 
@@ -19,6 +19,7 @@ const StoreSearch = () => {
         const steamSearchString = formData.userSearchTerm.trim().replace(/ /g, "+")
         const steamResults = await crud.post(import.meta.env.VITE_BACKEND_URL, "store_search", steamSearchString)
         console.log(steamResults)
+        setAppList(steamResults)
     }
 
     // console.log(formData)
